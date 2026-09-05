@@ -29,6 +29,7 @@ This repository includes the dedicated Excel workbook: **`BrowserStack_Device_Ma
 
 - **GitHub Repository**: [https://github.com/WebGhzYt/testdaybrowserstacktestthontestday](https://github.com/WebGhzYt/testdaybrowserstacktestthontestday)
 - **Target Application**: [https://bugbash.online/](https://bugbash.online/)
+- **Bug Bash Findings Report**: [BUG_BASH_FINDINGS_REPORT.md](BUG_BASH_FINDINGS_REPORT.md) (11 Verified Bugs)
 - **BrowserStack Project Name**: `webghzyt`
 - **BrowserStack Test Management Project**: [https://test-management.browserstack.com/projects/4102200/folder](https://test-management.browserstack.com/projects/4102200/folder)
 - **BrowserStack Automate Dashboard**: [https://automate.browserstack.com/dashboard](https://automate.browserstack.com/dashboard)

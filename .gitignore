@@ -12,6 +12,7 @@ __pycache__/
 
 # Test reports & exports
 reports/
+!reports/bug_bash_findings_report.md
 *.log
 log/
 ~*
