@@ -1,0 +1,69 @@
+Folder,Title,Description,Preconditions,Steps,Expected Result,Priority,Type
+Functional & UI/End-to-End,TC_001: End-to-End User Purchase Journey,Login -> Filter by Apple -> Add 2 items to Cart -> Fill Shipping Form -> Complete Checkout.,User credentials demouser / testingisfun99 exist. Catalog has Apple products.,"1. Navigate to /signin and login.
+2. Select 'Apple' vendor filter.
+3. Add 2 products to cart.
+4. Click Checkout.
+5. Fill shipping form.
+6. Click continue.",Order confirmation banner 'Your Order has been successfully placed' is displayed.,High,Functional
+Functional & UI/End-to-End,TC_002: Cart Persistence across Sessions,Verify cart items persist after user logs out and logs back in.,User is registered and logged in.,"1. Login as demouser.
+2. Add item to cart.
+3. Click logout.
+4. Re-login.
+5. Open cart drawer.",Cart drawer retains the previously added item with correct bag quantity.,High,Functional
+Functional & UI/End-to-End,TC_003: Unauthenticated Guest Checkout Prompt,Proceed to checkout as an unauthenticated guest and verify prompt to login.,No active user session (cookies cleared).,"1. Navigate to catalog.
+2. Add product to cart.
+3. Open cart and click Checkout.",User is redirected to /signin with a prompt to authenticate before checkout.,Medium,Functional
+Functional & UI/Smoke & Sanity,TC_004: Valid User Authentication,Verify login with valid credentials (demouser / testingisfun99).,Application is online at https://bugbash.online/.,"1. Go to /signin.
+2. Select demouser in Username.
+3. Select testingisfun99 in Password.
+4. Click Login.",User identifier label is displayed in header.,High,Smoke
+Functional & UI/Smoke & Sanity,TC_005: Invalid Password API Error Verification,Verify invalid login displays 'Invalid username or password' API error.,User enters incorrect password.,"1. Go to /signin.
+2. Select demouser.
+3. Type incorrect password.
+4. Click Login.",API error banner appears displaying invalid credentials message.,High,Negative
+Functional & UI/Catalog & Cart,TC_006: Samsung Vendor Catalog Filtering,Verify filtering products by 'Samsung' only displays Samsung devices.,Catalog is loaded with all products.,"1. Click Samsung filter checkmark in left sidebar.
+2. Inspect visible product titles.",All rendered shelf items contain 'Galaxy' or 'Samsung' in their title.,Medium,Functional
+Functional & UI/Catalog & Cart,TC_007: Cart Item Removal Decrements Bag Quantity,Verify removing an item from the cart decreases the bag quantity counter.,At least one item added to cart drawer.,"1. Add product to cart.
+2. Open cart drawer.
+3. Click 'X' delete button on item.",Item is removed and bag quantity counter decrements.,Medium,Functional
+Functional & UI/Catalog & Cart,TC_008: Mathematical Subtotal Calculation,Verify subtotal calculates correctly when multiple items are added.,Products with different price points in catalog.,"1. Add 2 distinct items to cart.
+2. Open cart drawer.
+3. Verify subtotal price.",Subtotal equals exact sum of item prices.,High,Functional
+Functional & UI/Catalog & Cart,TC_009: Empty Cart Notification Display,Verify empty cart displays 'Add some products in the cart'.,Cart is empty (new session).,1. Open cart drawer without adding any items.,Empty cart illustration/text 'Add some products in the cart' is visible.,Low,Edge Case
+Functional & UI/Catalog & Cart,TC_010: Checkout Button Disabled in Empty Cart,Verify checkout button is disabled or hidden when the cart is empty.,Cart is empty.,1. Open cart drawer.,Checkout button is either hidden or has disabled attribute.,Medium,Edge Case
+Functional & UI/Visual & Responsive,TC_011: Product Grid Layout Cross-Browser Parity,Verify product grid layout renders with proper bounding boxes across platforms.,Browser window open at 1920x1080.,"1. Load catalog page.
+2. Measure card height and width dimensions.",Cards render with non-zero dimensions and equal spacing.,Medium,Visual
+Functional & UI/Visual & Responsive,TC_012: Cart Drawer Animation & Transition,Verify cart drawer animation slides out smoothly and toggles open state.,Catalog loaded.,"1. Click floating bag icon.
+2. Verify .float-cart--open class.",Cart slides into view smoothly.,Low,Visual
+Functional & UI/Visual & Responsive,TC_013: 320px Viewport Image Boundary Containment,Verify product images do not overflow their containers on a 320px screen width.,Window resized to 320px.,"1. Resize viewport to 320px width.
+2. Inspect product image bounding widths.",Image width does not exceed 320px.,Medium,Visual
+Security & Vulnerability/Authentication,TC_014: SQL Injection Rejection in Login,Attempt SQL Injection (' OR 1=1 --) in username field; ensure rejection.,Login page loaded.,"1. Inject SQL payload in username.
+2. Click Login.",Authentication is rejected; no unauthorized access granted.,Critical,Security
+Security & Vulnerability/Authentication,TC_015: Direct /checkout URL Access Bypass Guard,Attempt to bypass login by directly navigating to /checkout.,No active session.,1. Navigate directly to /checkout.,Application guards the checkout route and redirects to /signin.,Critical,Security
+Security & Vulnerability/Authentication,TC_016: Session Invalidation upon Logout,Verify session token is invalidated upon clicking logout.,User logged in.,"1. Click logout.
+2. Click browser back button.",User session is not resurrected.,High,Security
+Security & Vulnerability/Injection & Fuzzing,TC_017: XSS Payload Escaping in Shipping Form,Inject malicious JavaScript (<script>alert('xss')</script>) into First Name.,Checkout page loaded.,"1. Enter XSS script in First Name field.
+2. Inspect DOM and document title.",Payload is escaped as text; script does not execute.,Critical,Security
+Security & Vulnerability/Injection & Fuzzing,TC_018: Postal Code Boundary & Fuzzing Resilience,Submit negative values and oversized 255+ char strings in postal code.,Shipping form open.,"1. Fill oversized postal code string.
+2. Click continue.",Application handles input safely without dumping raw server tracebacks.,Medium,Security
+Security & Vulnerability/Injection & Fuzzing,TC_019: Client DOM Price Tampering Inspection,Tamper with DOM price payload to $0.00 and verify price integrity.,Item in cart drawer.,"1. Tamper client-side price.
+2. Verify system records original product value.",True server price remains intact.,High,Security
+Performance & Reliability/Stress & Load,TC_020: 50 Concurrent User Login Simulation,Simulate 50 concurrent login requests hitting authentication endpoint.,Connection pool with 20 workers.,"1. Dispatch concurrent HTTP requests.
+2. Measure response codes.",High success rate without server 500 crashes.,High,Performance
+Performance & Reliability/Stress & Load,TC_021: Catalog Vendor Filter Load Simulation,Simulate concurrent requests hitting catalog endpoint under load.,Connection pool with 25 workers.,1. Dispatch parallel requests to catalog.,Catalog returns 200 OK across requests.,High,Performance
+Performance & Reliability/Spike & Resilience,TC_022: Rapid Add-to-Cart Click Spike Resilience,Rapidly click Add to Cart 15+ times in < 0.5s; verify UI stability.,Catalog loaded.,"1. Perform 15 clicks rapidly.
+2. Open cart.",UI does not freeze; cart retains added products.,Medium,Performance
+Performance & Reliability/Spike & Resilience,TC_023: Slow 3G Network Latency Throttling,Simulate high latency (Slow 3G) and verify login completes gracefully.,Network conditions emulated via CDP.,"1. Set 200ms latency.
+2. Execute login flow.",Login completes without premature timeout.,Medium,Performance
+Usability & Compliance/Accessibility,TC_024: Keyboard-Only Form Navigation (Tab & Enter),Navigate from login inputs to submit using exclusively Tab and Enter.,Login page loaded.,"1. Send TAB keystrokes to cycle focus.
+2. Verify activeElement.",Focus visibly highlights interactive input controls.,Medium,Accessibility
+Usability & Compliance/Accessibility,TC_025: Screen Reader Accessibility for Cart Close Button,Verify screen readers can announce the 'X' button inside cart drawer.,Cart drawer open.,"1. Inspect close button attributes for aria-label, role, or text.",Close button has accessible identifier attribute.,High,Accessibility
+Usability & Compliance/Accessibility,TC_026: Error Banner Color Contrast Verification,Verify color contrast CSS property on red invalid login error text.,Error banner visible.,1. Read computed CSS color property on error element.,Defined high-contrast color property is present.,Low,Accessibility
+Usability & Compliance/Form Validation,TC_027: Blank Shipping Form Inline Validation,Submit shipping form completely blank and verify submission is blocked.,Checkout page loaded.,1. Click continue without typing fields.,Order placement is blocked; inline validation triggers.,High,Functional
+Usability & Compliance/Form Validation,TC_028: Mandatory Address Field Enforcement,Ensure missing mandatory Address Line 1 blocks checkout completion.,All fields filled except address.,1. Submit form with missing address.,Submission is prevented.,High,Functional
+Specialized & Infrastructure/Mobile & Web,TC_029: Mobile Viewport Floating Cart Accessibility,Verify floating cart icon is accessible on mobile (375x812 iPhone dimension).,Window set to 375x812.,1. Click cart icon on mobile viewport.,Drawer opens and covers viewport responsively.,High,Compatibility
+Specialized & Infrastructure/Mobile & Web,TC_030: Mobile Postal Code Keypad Input Attribute,Verify shipping postal code input attributes for mobile keypad invocation.,Checkout page loaded.,1. Inspect postal code input element attributes.,Element is visible with appropriate type/inputmode.,Medium,Compatibility
+Specialized & Infrastructure/API Integrity,TC_031: Graceful 404 Route Fallback Handling,Verify non-existent routes render a clean fallback without raw server traces.,Navigate to /non-existent-endpoint.,"1. Open 404 URL.
+2. Inspect page body.",No internal 500 server dumps or unhandled Python/Node tracebacks.,Medium,Reliability
+Specialized & Infrastructure/API Integrity,TC_032: Local Storage and Cookie Cart State Reset,Verify clearing Local Storage and Cookies resets unauthenticated cart state.,Item in cart.,"1. Clear localStorage, sessionStorage, and cookies.
+2. Refresh page.",Cart resets to 0 items immediately.,High,Functional
