@@ -1,69 +1,262 @@
-Folder,Title,Description,Preconditions,Steps,Expected Result,Priority,Type
-Functional & UI/End-to-End,TC_001: End-to-End User Purchase Journey,Login -> Filter by Apple -> Add 2 items to Cart -> Fill Shipping Form -> Complete Checkout.,User credentials demouser / testingisfun99 exist. Catalog has Apple products.,"1. Navigate to /signin and login.
-2. Select 'Apple' vendor filter.
-3. Add 2 products to cart.
-4. Click Checkout.
-5. Fill shipping form.
-6. Click continue.",Order confirmation banner 'Your Order has been successfully placed' is displayed.,High,Functional
-Functional & UI/End-to-End,TC_002: Cart Persistence across Sessions,Verify cart items persist after user logs out and logs back in.,User is registered and logged in.,"1. Login as demouser.
-2. Add item to cart.
-3. Click logout.
-4. Re-login.
-5. Open cart drawer.",Cart drawer retains the previously added item with correct bag quantity.,High,Functional
-Functional & UI/End-to-End,TC_003: Unauthenticated Guest Checkout Prompt,Proceed to checkout as an unauthenticated guest and verify prompt to login.,No active user session (cookies cleared).,"1. Navigate to catalog.
-2. Add product to cart.
-3. Open cart and click Checkout.",User is redirected to /signin with a prompt to authenticate before checkout.,Medium,Functional
-Functional & UI/Smoke & Sanity,TC_004: Valid User Authentication,Verify login with valid credentials (demouser / testingisfun99).,Application is online at https://bugbash.online/.,"1. Go to /signin.
-2. Select demouser in Username.
-3. Select testingisfun99 in Password.
-4. Click Login.",User identifier label is displayed in header.,High,Smoke
-Functional & UI/Smoke & Sanity,TC_005: Invalid Password API Error Verification,Verify invalid login displays 'Invalid username or password' API error.,User enters incorrect password.,"1. Go to /signin.
-2. Select demouser.
-3. Type incorrect password.
-4. Click Login.",API error banner appears displaying invalid credentials message.,High,Negative
-Functional & UI/Catalog & Cart,TC_006: Samsung Vendor Catalog Filtering,Verify filtering products by 'Samsung' only displays Samsung devices.,Catalog is loaded with all products.,"1. Click Samsung filter checkmark in left sidebar.
-2. Inspect visible product titles.",All rendered shelf items contain 'Galaxy' or 'Samsung' in their title.,Medium,Functional
-Functional & UI/Catalog & Cart,TC_007: Cart Item Removal Decrements Bag Quantity,Verify removing an item from the cart decreases the bag quantity counter.,At least one item added to cart drawer.,"1. Add product to cart.
-2. Open cart drawer.
-3. Click 'X' delete button on item.",Item is removed and bag quantity counter decrements.,Medium,Functional
-Functional & UI/Catalog & Cart,TC_008: Mathematical Subtotal Calculation,Verify subtotal calculates correctly when multiple items are added.,Products with different price points in catalog.,"1. Add 2 distinct items to cart.
-2. Open cart drawer.
-3. Verify subtotal price.",Subtotal equals exact sum of item prices.,High,Functional
-Functional & UI/Catalog & Cart,TC_009: Empty Cart Notification Display,Verify empty cart displays 'Add some products in the cart'.,Cart is empty (new session).,1. Open cart drawer without adding any items.,Empty cart illustration/text 'Add some products in the cart' is visible.,Low,Edge Case
-Functional & UI/Catalog & Cart,TC_010: Checkout Button Disabled in Empty Cart,Verify checkout button is disabled or hidden when the cart is empty.,Cart is empty.,1. Open cart drawer.,Checkout button is either hidden or has disabled attribute.,Medium,Edge Case
-Functional & UI/Visual & Responsive,TC_011: Product Grid Layout Cross-Browser Parity,Verify product grid layout renders with proper bounding boxes across platforms.,Browser window open at 1920x1080.,"1. Load catalog page.
-2. Measure card height and width dimensions.",Cards render with non-zero dimensions and equal spacing.,Medium,Visual
-Functional & UI/Visual & Responsive,TC_012: Cart Drawer Animation & Transition,Verify cart drawer animation slides out smoothly and toggles open state.,Catalog loaded.,"1. Click floating bag icon.
-2. Verify .float-cart--open class.",Cart slides into view smoothly.,Low,Visual
-Functional & UI/Visual & Responsive,TC_013: 320px Viewport Image Boundary Containment,Verify product images do not overflow their containers on a 320px screen width.,Window resized to 320px.,"1. Resize viewport to 320px width.
-2. Inspect product image bounding widths.",Image width does not exceed 320px.,Medium,Visual
-Security & Vulnerability/Authentication,TC_014: SQL Injection Rejection in Login,Attempt SQL Injection (' OR 1=1 --) in username field; ensure rejection.,Login page loaded.,"1. Inject SQL payload in username.
-2. Click Login.",Authentication is rejected; no unauthorized access granted.,Critical,Security
-Security & Vulnerability/Authentication,TC_015: Direct /checkout URL Access Bypass Guard,Attempt to bypass login by directly navigating to /checkout.,No active session.,1. Navigate directly to /checkout.,Application guards the checkout route and redirects to /signin.,Critical,Security
-Security & Vulnerability/Authentication,TC_016: Session Invalidation upon Logout,Verify session token is invalidated upon clicking logout.,User logged in.,"1. Click logout.
-2. Click browser back button.",User session is not resurrected.,High,Security
-Security & Vulnerability/Injection & Fuzzing,TC_017: XSS Payload Escaping in Shipping Form,Inject malicious JavaScript (<script>alert('xss')</script>) into First Name.,Checkout page loaded.,"1. Enter XSS script in First Name field.
-2. Inspect DOM and document title.",Payload is escaped as text; script does not execute.,Critical,Security
-Security & Vulnerability/Injection & Fuzzing,TC_018: Postal Code Boundary & Fuzzing Resilience,Submit negative values and oversized 255+ char strings in postal code.,Shipping form open.,"1. Fill oversized postal code string.
-2. Click continue.",Application handles input safely without dumping raw server tracebacks.,Medium,Security
-Security & Vulnerability/Injection & Fuzzing,TC_019: Client DOM Price Tampering Inspection,Tamper with DOM price payload to $0.00 and verify price integrity.,Item in cart drawer.,"1. Tamper client-side price.
-2. Verify system records original product value.",True server price remains intact.,High,Security
-Performance & Reliability/Stress & Load,TC_020: 50 Concurrent User Login Simulation,Simulate 50 concurrent login requests hitting authentication endpoint.,Connection pool with 20 workers.,"1. Dispatch concurrent HTTP requests.
-2. Measure response codes.",High success rate without server 500 crashes.,High,Performance
-Performance & Reliability/Stress & Load,TC_021: Catalog Vendor Filter Load Simulation,Simulate concurrent requests hitting catalog endpoint under load.,Connection pool with 25 workers.,1. Dispatch parallel requests to catalog.,Catalog returns 200 OK across requests.,High,Performance
-Performance & Reliability/Spike & Resilience,TC_022: Rapid Add-to-Cart Click Spike Resilience,Rapidly click Add to Cart 15+ times in < 0.5s; verify UI stability.,Catalog loaded.,"1. Perform 15 clicks rapidly.
-2. Open cart.",UI does not freeze; cart retains added products.,Medium,Performance
-Performance & Reliability/Spike & Resilience,TC_023: Slow 3G Network Latency Throttling,Simulate high latency (Slow 3G) and verify login completes gracefully.,Network conditions emulated via CDP.,"1. Set 200ms latency.
-2. Execute login flow.",Login completes without premature timeout.,Medium,Performance
-Usability & Compliance/Accessibility,TC_024: Keyboard-Only Form Navigation (Tab & Enter),Navigate from login inputs to submit using exclusively Tab and Enter.,Login page loaded.,"1. Send TAB keystrokes to cycle focus.
-2. Verify activeElement.",Focus visibly highlights interactive input controls.,Medium,Accessibility
-Usability & Compliance/Accessibility,TC_025: Screen Reader Accessibility for Cart Close Button,Verify screen readers can announce the 'X' button inside cart drawer.,Cart drawer open.,"1. Inspect close button attributes for aria-label, role, or text.",Close button has accessible identifier attribute.,High,Accessibility
-Usability & Compliance/Accessibility,TC_026: Error Banner Color Contrast Verification,Verify color contrast CSS property on red invalid login error text.,Error banner visible.,1. Read computed CSS color property on error element.,Defined high-contrast color property is present.,Low,Accessibility
-Usability & Compliance/Form Validation,TC_027: Blank Shipping Form Inline Validation,Submit shipping form completely blank and verify submission is blocked.,Checkout page loaded.,1. Click continue without typing fields.,Order placement is blocked; inline validation triggers.,High,Functional
-Usability & Compliance/Form Validation,TC_028: Mandatory Address Field Enforcement,Ensure missing mandatory Address Line 1 blocks checkout completion.,All fields filled except address.,1. Submit form with missing address.,Submission is prevented.,High,Functional
-Specialized & Infrastructure/Mobile & Web,TC_029: Mobile Viewport Floating Cart Accessibility,Verify floating cart icon is accessible on mobile (375x812 iPhone dimension).,Window set to 375x812.,1. Click cart icon on mobile viewport.,Drawer opens and covers viewport responsively.,High,Compatibility
-Specialized & Infrastructure/Mobile & Web,TC_030: Mobile Postal Code Keypad Input Attribute,Verify shipping postal code input attributes for mobile keypad invocation.,Checkout page loaded.,1. Inspect postal code input element attributes.,Element is visible with appropriate type/inputmode.,Medium,Compatibility
-Specialized & Infrastructure/API Integrity,TC_031: Graceful 404 Route Fallback Handling,Verify non-existent routes render a clean fallback without raw server traces.,Navigate to /non-existent-endpoint.,"1. Open 404 URL.
-2. Inspect page body.",No internal 500 server dumps or unhandled Python/Node tracebacks.,Medium,Reliability
-Specialized & Infrastructure/API Integrity,TC_032: Local Storage and Cookie Cart State Reset,Verify clearing Local Storage and Cookies resets unauthenticated cart state.,Item in cart.,"1. Clear localStorage, sessionStorage, and cookies.
-2. Refresh page.",Cart resets to 0 items immediately.,High,Functional
+Folder,Title,Category,Type,Priority,Description,Steps,Expected Result
+01. Authentication & Login/1.1 Smoke & Valid Authentication,TC_AUTH_001: Valid User Authentication (Golden Path),Functional & UI,Smoke Testing,Critical,Verify login with valid credentials (demouser / testingisfun99) displays username header.,"1. Navigate to /signin
+2. Select demouser
+3. Select testingisfun99
+4. Click Login",User identifier label is displayed in header.
+01. Authentication & Login/1.1 Smoke & Valid Authentication,TC_AUTH_002: Invalid Password Error Banner Notification,Functional & UI,Negative Testing,High,Verify invalid password triggers 'Invalid username or password' API error banner.,"1. Go to /signin
+2. Select demouser
+3. Type incorrect password
+4. Click Login",Error banner displays 'Invalid username or password'.
+01. Authentication & Login/1.1 Smoke & Valid Authentication,TC_AUTH_003: Empty Username and Password Form Validation,Functional & UI,Sanity Testing,High,Submitting login form without selecting credentials prompts inline selection requirement.,"1. Go to /signin
+2. Leave inputs blank
+3. Click Login button",Login submission is halted; form prompts for required credentials.
+01. Authentication & Login/1.1 Smoke & Valid Authentication,TC_AUTH_004: Password Field Input Masking (type=password),Security & Vulnerability,Security Testing,High,Verify password input characters are masked to prevent shoulder surfing.,"1. Inspect password input element in DOM
+2. Verify input type attribute",Input element has type='password' masking characters.
+01. Authentication & Login/1.1 Smoke & Valid Authentication,TC_AUTH_005: Case Sensitivity Verification in Username,Functional & UI,Integration Testing,Medium,Verify entering capitalized credentials ('DemoUser') handles authentication consistently.,"1. Type 'DemoUser' into username
+2. Attempt authentication",Authentication responds appropriately based on user account store rules.
+01. Authentication & Login/1.2 Session & CSRF Security,TC_AUTH_006: Session Persistence across Page Reload,Functional & UI,System Testing,High,Verify authenticated state is maintained after browser refresh/reload.,"1. Login successfully
+2. Execute driver.refresh()
+3. Inspect header for username",Username remains displayed in header without requiring re-login.
+01. Authentication & Login/1.2 Session & CSRF Security,TC_AUTH_007: Complete User Logout and Cookie Clearance,Security & Vulnerability,Authentication & Authorization,Critical,Verify clicking Logout removes session cookies and returns header to 'Sign In'.,"1. Login
+2. Click 'Logout'
+3. Inspect header",Header renders 'Sign In' link; session cookie is cleared.
+01. Authentication & Login/1.2 Session & CSRF Security,TC_AUTH_008: Browser Back-Button Session Resuscitation Guard,Security & Vulnerability,Penetration Testing (Pen Testing),Critical,"After logout, clicking browser back button must not resurrect authorized session.","1. Login
+2. Logout
+3. Click driver.back()
+4. Verify protected actions require login",Protected endpoints cannot be acted upon; back button shows stale cached view or redirects.
+01. Authentication & Login/1.3 Keyboard & Accessibility Auth,TC_AUTH_009: Keyboard TAB Traversal across Auth Inputs,Usability & Compliance,Accessibility Testing (WCAG / ADA),Medium,"Ensure users can navigate username, password, and login button using only TAB key.","1. Open /signin
+2. Press TAB
+3. Check document.activeElement",Focus moves sequentially through input fields and login button.
+01. Authentication & Login/1.3 Keyboard & Accessibility Auth,TC_AUTH_010: Enter Key Trigger for Form Submission,Usability & Compliance,Usability Testing,Medium,Submitting password field with Enter key must trigger authentication.,"1. Select username and password
+2. Send Keys.ENTER on password field",Login request triggers without requiring mouse click.
+01. Authentication & Login/1.3 Keyboard & Accessibility Auth,TC_AUTH_011: Header Displays Authenticated Username Correctly,Functional & UI,Visual Testing,Medium,Verify header label accurately mirrors logged-in username ('demouser').,"1. Login as demouser
+2. Inspect .username element in top navigation",Text matches 'demouser' exactly.
+01. Authentication & Login/1.3 Keyboard & Accessibility Auth,TC_AUTH_012: Logout Button Visually Toggled upon Login,Functional & UI,Regression Testing,Medium,Verify 'Sign In' transforms into 'Logout' link after successful authentication.,"1. Load homepage (Sign In present)
+2. Login
+3. Inspect header",Sign In is replaced by Logout button.
+01. Authentication & Login/1.3 Keyboard & Accessibility Auth,TC_AUTH_013: Locked / Existing Account Error Message Grace,Functional & UI,User Acceptance Testing (UAT),Medium,"Verify existing user accounts (image_not_loading_user, fav_user) are handled properly.","1. Login as image_not_loading_user
+2. Inspect behavior",System acknowledges account configuration without crashing.
+01. Authentication & Login/1.3 Keyboard & Accessibility Auth,TC_AUTH_014: Whitespace Padding in Login Credentials,Functional & UI,Unit Testing,Low,Verify trailing or leading spaces are trimmed or handled cleanly.,"1. Enter ' demouser '
+2. Submit login",System either auto-trims or returns clear validation error.
+01. Authentication & Login/1.3 Keyboard & Accessibility Auth,TC_AUTH_015: Re-authentication Prompt on Direct Route Access,Security & Vulnerability,Authentication & Authorization,High,Directly navigating to protected routes forces user back to /signin.,"1. Clear session
+2. Navigate to /checkout
+3. Observe redirection",User is redirected to /signin with redirect parameter.
+02. Product Catalog & Listing/2.1 Vendor Filters & Reflow,TC_CAT_001: Initial Catalog Total Product Count (>15 items),Functional & UI,Smoke Testing,High,Verify catalog loads all available products on initial load.,"1. Load homepage
+2. Count elements matching .shelf-item",Count is greater than or equal to 16 items.
+02. Product Catalog & Listing/2.1 Vendor Filters & Reflow,TC_CAT_002: Apple Vendor Catalog Filter Isolation,Functional & UI,Functional Testing,High,Clicking Apple filter displays exclusively iPhone devices.,"1. Click 'Apple' vendor checkbox
+2. Inspect visible product titles",All visible items contain 'iPhone'.
+02. Product Catalog & Listing/2.1 Vendor Filters & Reflow,TC_CAT_003: Samsung Vendor Catalog Filter Isolation,Functional & UI,Functional Testing,High,Clicking Samsung filter displays exclusively Galaxy devices.,"1. Click 'Samsung' vendor checkbox
+2. Inspect visible product titles",All visible items contain 'Galaxy'.
+02. Product Catalog & Listing/2.1 Vendor Filters & Reflow,TC_CAT_004: Google Vendor Catalog Filter Isolation,Functional & UI,Functional Testing,High,Clicking Google filter displays exclusively Pixel devices.,"1. Click 'Google' vendor checkbox
+2. Inspect visible product titles",All visible items contain 'Pixel'.
+02. Product Catalog & Listing/2.1 Vendor Filters & Reflow,TC_CAT_005: OnePlus Vendor Catalog Filter Isolation,Functional & UI,Functional Testing,High,Clicking OnePlus filter displays exclusively OnePlus devices.,"1. Click 'OnePlus' vendor checkbox
+2. Inspect visible product titles",All visible items contain 'One Plus' or 'OnePlus'.
+02. Product Catalog & Listing/2.1 Vendor Filters & Reflow,TC_CAT_006: Multi-Vendor Filter Combination (Apple + Samsung),Functional & UI,Integration Testing,Medium,Selecting both Apple and Samsung filters renders union of both brands.,"1. Check Apple
+2. Check Samsung
+3. Inspect visible product titles",Items consist exclusively of Apple and Samsung products.
+02. Product Catalog & Listing/2.1 Vendor Filters & Reflow,TC_CAT_007: Deselecting Vendor Filter Restores Full Catalog,Functional & UI,Regression Testing,Medium,Unchecking active vendor filter restores full product list count.,"1. Check Apple (count reduces)
+2. Uncheck Apple",Total product count returns to initial full catalog count.
+02. Product Catalog & Listing/2.2 Sorting & Price Range,TC_CAT_008: Sort Products by Price: Lowest to Highest,Functional & UI,Functional Testing,High,Selecting 'Lowest to highest' sorts shelf items in ascending price order.,"1. Select 'Lowest to highest' in sort dropdown
+2. Extract all visible prices",Price array is strictly non-decreasing: p[i] <= p[i+1].
+02. Product Catalog & Listing/2.2 Sorting & Price Range,TC_CAT_009: Sort Products by Price: Highest to Lowest,Functional & UI,Functional Testing,High,Selecting 'Highest to lowest' sorts shelf items in descending price order.,"1. Select 'Highest to lowest' in sort dropdown
+2. Extract all visible prices",Price array is strictly non-increasing: p[i] >= p[i+1].
+02. Product Catalog & Listing/2.2 Sorting & Price Range,TC_CAT_010: Product Title Text String Integrity,Functional & UI,Unit Testing,Medium,Ensure every catalog card contains non-empty title string.,"1. Inspect all .shelf-item__title elements
+2. Verify text length > 0",100% of product cards have descriptive text title.
+02. Product Catalog & Listing/2.3 Responsive Grid & Visual Parity,TC_CAT_011: Currency Formatting Integrity ($ symbol and decimals),Functional & UI,Visual Testing,Medium,Verify all displayed product prices include dollar symbol and 2 decimal places.,1. Inspect .val elements in catalog cards,Price strings match currency format pattern.
+02. Product Catalog & Listing/2.3 Responsive Grid & Visual Parity,TC_CAT_012: Dynamic Shelf Count Header Update,Functional & UI,UI Testing,Low,Verify 'X Product(s) found' matches actual DOM shelf-item count.,"1. Read shelf header count
+2. Count actual .shelf-item cards",Displayed count matches number of rendered elements.
+02. Product Catalog & Listing/2.3 Responsive Grid & Visual Parity,TC_CAT_013: Responsive CSS Grid Spacing across Viewports,Specialized & Infrastructure,Cross Browser Testing,Medium,Verify catalog grid reflows cleanly without horizontal overflow.,"1. Measure document scrollWidth vs window innerWidth at 1280px, 1024px, 768px",scrollWidth <= innerWidth + 10px across all resolutions.
+02. Product Catalog & Listing/2.3 Responsive Grid & Visual Parity,TC_CAT_014: Free Shipping Tag Render Check,Functional & UI,Exploratory Testing,Low,Verify presence of 'Free shipping' badge on applicable catalog items.,"1. Find elements with .shelf-stopper class
+2. Inspect badge text",Badge renders 'Free shipping' clearly on designated products.
+02. Product Catalog & Listing/2.3 Responsive Grid & Visual Parity,TC_CAT_015: Scroll Position Restoration on Filter Toggle,Usability & Compliance,Usability Testing,Low,Ensure toggling filters does not break viewport scrolling.,"1. Scroll down catalog
+2. Toggle vendor filter
+3. Verify page is responsive",Viewport handles scroll position smoothly.
+03. Product Details & Inspection/3.1 Image Retina Resolution & Bounds,TC_DET_001: High-DPI Product Thumbnail Rendering Dimensions,Functional & UI,Visual Testing,Medium,Verify product thumbnail images have non-zero height and width dimensions.,"1. Inspect first 5 product thumbnail images
+2. Measure img.rect width/height",Width > 50px and height > 50px for all inspected images.
+03. Product Details & Inspection/3.1 Image Retina Resolution & Bounds,TC_DET_002: Image Aspect Ratio Containment without Distortion,Functional & UI,Visual Testing,Medium,Verify product images retain natural aspect ratio without horizontal stretching.,1. Check computed CSS object-fit and aspect ratio properties,Images render within proper aspect constraints.
+03. Product Details & Inspection/3.1 Image Retina Resolution & Bounds,TC_DET_003: Accessible 'alt' Attribute on Product Images,Usability & Compliance,Accessibility Testing (WCAG / ADA),High,Verify every product image element includes an accessible alt text tag.,"1. Inspect all <img> tags within .shelf-item
+2. Verify alt attribute presence",All product images include non-empty or descriptive alt attributes.
+03. Product Details & Inspection/3.1 Image Retina Resolution & Bounds,TC_DET_004: Broken Image Fallback Handling,Functional & UI,System Testing,Medium,Verify account with image loading issues (image_not_loading_user) handles missing images gracefully.,"1. Login as image_not_loading_user
+2. Verify UI does not crash or break layout",Application layout remains intact despite missing asset responses.
+03. Product Details & Inspection/3.2 Pricing & Currency Integrity,TC_DET_005: Client-Side DOM Price Tampering Rejection,Security & Vulnerability,Security Testing,Critical,Tampering client DOM price to $0.00 does not affect true subtotal or server cart value.,"1. Add item ($799)
+2. Modify DOM element text to '$0.00'
+3. Check cart subtotal",Original price is preserved in cart data structure; tampering fails.
+03. Product Details & Inspection/3.2 Pricing & Currency Integrity,TC_DET_006: Product Card Hover CSS Transition State,Functional & UI,Visual Testing,Low,Hovering over product card triggers elevation shadow or border highlight.,"1. Hover over first product card
+2. Check computed CSS styles",Hover state transitions smoothly.
+03. Product Details & Inspection/3.2 Pricing & Currency Integrity,TC_DET_007: Add to Cart Button Hover & Focus Styling,Usability & Compliance,Usability Testing,Medium,Verify 'Add to cart' button displays active cursor:pointer and distinct focus styling.,1. Inspect .shelf-item__buy-btn CSS cursor property,Cursor is 'pointer' and element is clickable.
+03. Product Details & Inspection/3.2 Pricing & Currency Integrity,TC_DET_008: Product Identifier Uniqueness in DOM,Functional & UI,Unit Testing,Medium,Verify each catalog card has unique data attributes or discrete DOM keys.,"1. Extract all product IDs/keys from DOM
+2. Verify set length equals list length",No duplicate key errors exist in DOM.
+03. Product Details & Inspection/3.2 Pricing & Currency Integrity,TC_DET_009: Product Installments / Payment Plan Subtext,Functional & UI,Exploratory Testing,Low,"Verify products display monthly installment options (e.g., 'or 9 x $...').",1. Inspect .shelf-item__price sub-elements,Installment subtext is displayed formatted correctly.
+03. Product Details & Inspection/3.2 Pricing & Currency Integrity,TC_DET_010: Product Title Text Clipping Prevention,Functional & UI,Visual Testing,Low,Verify long product titles wrap gracefully without overflowing card boundaries.,1. Check text-overflow and white-space properties on title elements,Titles fit inside card width without awkward clipping.
+04. Cart Operations & Adding Products/4.1 Rapid Click Spike & Race Conditions,TC_ADD_001: Add Single Product from Catalog to Cart Drawer,Functional & UI,Smoke Testing,Critical,Clicking 'Add to cart' opens drawer and populates item.,"1. Click 'Add to cart' on first product
+2. Check drawer visibility",Cart drawer opens with 1 item present.
+04. Cart Operations & Adding Products/4.1 Rapid Click Spike & Race Conditions,TC_ADD_002: Add Multiple Distinct Products to Cart,Functional & UI,Integration Testing,High,Adding 3 different products populates 3 distinct items in cart drawer.,"1. Add product 0
+2. Add product 1
+3. Add product 2
+4. Open cart",Cart contains 3 distinct items; bag quantity equals 3.
+04. Cart Operations & Adding Products/4.1 Rapid Click Spike & Race Conditions,TC_ADD_003: Floating Bag Badge Counter Instant Synchronization,Functional & UI,System Testing,High,Adding product updates floating bag quantity counter immediately.,"1. Note initial bag count
+2. Click Add to cart
+3. Check bag count",Bag count increments by 1.
+04. Cart Operations & Adding Products/4.1 Rapid Click Spike & Race Conditions,TC_ADD_004: Rapid Click Spike Resilience (<500ms Clicks),Performance & Reliability,Spike Testing,High,Rapidly firing 15+ clicks on Add to cart does not freeze UI thread.,"1. Dispatch 15 clicks in loop
+2. Verify browser responsiveness",Browser remains responsive without crashing or JS errors.
+04. Cart Operations & Adding Products/4.2 Drawer Animation & Controls,TC_ADD_005: Cart Drawer Slide-Out Animation Verification,Functional & UI,Visual Testing,Medium,Verify .float-cart--open class is toggled and cart animates smoothly into view.,"1. Open cart drawer
+2. Verify .float-cart--open is present in classList",Cart drawer is positioned on screen with open class.
+04. Cart Operations & Adding Products/4.2 Drawer Animation & Controls,TC_ADD_006: Close Cart Drawer via 'X' Close Button,Functional & UI,Functional Testing,High,Clicking close button inside drawer slides cart closed.,"1. Open cart
+2. Click .float-cart__close-btn
+3. Check drawer state",Cart drawer closes; open class is removed.
+04. Cart Operations & Adding Products/4.2 Drawer Animation & Controls,TC_ADD_007: Close Cart Drawer via Floating Bag Click Toggle,Functional & UI,Usability Testing,Medium,Clicking floating bag when cart is open toggles it closed.,"1. Open cart
+2. Click floating bag icon again",Cart drawer closes.
+04. Cart Operations & Adding Products/4.3 Multi-Item Math & Quantity,TC_ADD_008: Mathematical Subtotal Aggregation of Multiple Products,Functional & UI,Unit Testing,Critical,Subtotal equals exact mathematical sum of all added item prices.,"1. Add item 1 ($X) and item 2 ($Y)
+2. Compare subtotal to X + Y",subtotal == X + Y.
+04. Cart Operations & Adding Products/4.3 Multi-Item Math & Quantity,TC_ADD_009: Decimal Precision in Subtotal Calculation,Functional & UI,Regression Testing,High,Ensure floating point additions do not introduce rounding errors (e.g. .00000001).,"1. Add items with cents values
+2. Check formatted subtotal string",Subtotal formatted with exactly 2 decimal places.
+04. Cart Operations & Adding Products/4.3 Multi-Item Math & Quantity,TC_ADD_010: Cart Item Deletion Decrements Counter,Functional & UI,Functional Testing,High,Clicking delete button on cart item removes card and decrements counter.,"1. Add 2 items
+2. Delete 1 item from drawer
+3. Check bag quantity",Bag quantity decrements to 1.
+04. Cart Operations & Adding Products/4.4 Cart Item Removal & Empty State,TC_ADD_011: Deleting All Items Displays Empty Notification,Functional & UI,User Acceptance Testing (UAT),Medium,Deleting all items triggers 'Add some products in the cart' message.,"1. Add item
+2. Delete item
+3. Observe drawer message",'Add some products in the cart' illustration/text is displayed.
+04. Cart Operations & Adding Products/4.4 Cart Item Removal & Empty State,TC_ADD_012: Empty Cart Checkout Button Disabled or Hidden,Functional & UI,Sanity Testing,High,Verify checkout button cannot be triggered when cart is empty.,"1. Open empty cart
+2. Inspect checkout button state",Checkout button is either disabled or not rendered.
+04. Cart Operations & Adding Products/4.4 Cart Item Removal & Empty State,TC_ADD_013: Screen Reader Accessible Name on Cart Close Button,Usability & Compliance,Accessibility Testing (WCAG / ADA),High,Verify screen readers announce the 'X' button inside cart drawer.,1. Inspect close button attributes for aria-label or accessible text,Button has accessible name attribute.
+04. Cart Operations & Adding Products/4.4 Cart Item Removal & Empty State,TC_ADD_014: Cart Persistence across Browser Storage Reset,Specialized & Infrastructure,Database / Data Integrity Testing,High,Clearing local/session storage and cookies resets unauthenticated cart state.,"1. Add item
+2. Clear window.localStorage
+3. Refresh page",Cart resets to 0 items immediately.
+04. Cart Operations & Adding Products/4.4 Cart Item Removal & Empty State,TC_ADD_015: Drawer Scrollability on 5+ Cart Items (Overflow-Y),Functional & UI,Visual Testing,Low,Ensure cart shelf list scrolls vertically when multiple items exceed height.,"1. Add 6 products to cart
+2. Open drawer
+3. Inspect overflow-y CSS",Cart drawer content is scrollable.
+05. Shipping Forms & Field Validation/5.1 Mandatory Fields & Form Validation,TC_FRM_001: Blank Shipping Form Submission Blocks Checkout,Functional & UI,End-to-End (E2E) Testing,Critical,Submitting shipping form with empty fields is prevented with validation errors.,"1. Navigate to checkout
+2. Click continue without entering fields",Submission is blocked; required field alerts appear.
+05. Shipping Forms & Field Validation/5.1 Mandatory Fields & Form Validation,TC_FRM_002: Missing First Name Mandatory Validation Enforcement,Functional & UI,Functional Testing,High,Submitting shipping form with empty First Name triggers inline alert.,"1. Fill Last Name, Address, State, Postal Code
+2. Leave First Name empty
+3. Submit",Checkout halted; First Name flagged as required.
+05. Shipping Forms & Field Validation/5.1 Mandatory Fields & Form Validation,TC_FRM_003: Missing Last Name Mandatory Validation Enforcement,Functional & UI,Functional Testing,High,Submitting shipping form with empty Last Name triggers inline alert.,"1. Fill all fields except Last Name
+2. Submit",Checkout halted; Last Name flagged as required.
+05. Shipping Forms & Field Validation/5.1 Mandatory Fields & Form Validation,TC_FRM_004: Missing Address Line Mandatory Validation Enforcement,Functional & UI,Functional Testing,High,Submitting shipping form with missing address blocks order confirmation.,"1. Fill all fields except Address
+2. Submit",Checkout halted; Address required.
+05. Shipping Forms & Field Validation/5.1 Mandatory Fields & Form Validation,TC_FRM_005: Missing State/Province Mandatory Validation,Functional & UI,Functional Testing,High,Submitting shipping form without state/province is blocked.,"1. Fill all fields except State
+2. Submit",Checkout halted; State required.
+05. Shipping Forms & Field Validation/5.2 Postal Code Boundary & Fuzzing,TC_FRM_006: Missing Postal Code Mandatory Validation,Functional & UI,Functional Testing,High,Submitting shipping form without postal code is blocked.,"1. Fill all fields except Postal Code
+2. Submit",Checkout halted; Postal Code required.
+05. Shipping Forms & Field Validation/5.2 Postal Code Boundary & Fuzzing,TC_FRM_007: Postal Code Boundary Fuzzing - Oversized 255+ Chars,Security & Vulnerability,Vulnerability Assessment,High,Submitting 255+ characters in postal code field does not crash application.,"1. Enter '9' * 300 in postal code
+2. Submit",Application handles input safely without 500 server stack dumps.
+05. Shipping Forms & Field Validation/5.2 Postal Code Boundary & Fuzzing,TC_FRM_008: Postal Code Boundary Fuzzing - Negative Values,Security & Vulnerability,Penetration Testing (Pen Testing),Medium,Submitting negative numbers ('-90210') handled safely.,"1. Enter '-90210' in postal code
+2. Submit",Input validated safely.
+05. Shipping Forms & Field Validation/5.2 Postal Code Boundary & Fuzzing,TC_FRM_009: Special Symbol Fuzzing in Shipping Inputs (!@#$%^&*),Security & Vulnerability,Fuzz Testing,Medium,Entering special symbols in address lines handled without raw server error.,"1. Enter '!@#$%^&*()' in Address Line
+2. Submit",Input sanitized safely.
+05. Shipping Forms & Field Validation/5.3 Unicode & Mobile Attributes,TC_FRM_010: Unicode & International Accents in Customer Name,Usability & Compliance,Internationalization (i18n) Testing,Medium,Verify names with accented characters (e.g. 'José Müller') submit successfully.,"1. Enter 'José' in First Name and 'Müller' in Last Name
+2. Complete form",Form accepts Unicode characters without encoding corruption.
+05. Shipping Forms & Field Validation/5.3 Unicode & Mobile Attributes,TC_FRM_011: Mobile Postal Code Keypad Input Attribute,Specialized & Infrastructure,Mobile App Testing (iOS & Android),Medium,Verify postal code input element attributes invoke numeric keypad on mobile devices.,1. Inspect postal code input element attributes,Element is visible with appropriate type/inputmode.
+05. Shipping Forms & Field Validation/5.3 Unicode & Mobile Attributes,TC_FRM_012: Keyboard TAB Order across Shipping Inputs,Usability & Compliance,Accessibility Testing (WCAG / ADA),Medium,TAB cycles focus in logical order: First Name -> Last Name -> Address -> State -> Postal Code.,"1. Focus First Name
+2. Press TAB repeatedly
+3. Verify activeElement sequence",Sequential logical tab order.
+05. Shipping Forms & Field Validation/5.3 Unicode & Mobile Attributes,TC_FRM_013: Auto-Fill and Browser Credential Compatibility,Functional & UI,Compatibility Testing,Low,Form elements allow standard browser autocomplete attributes.,1. Inspect autocomplete attribute on shipping inputs,Inputs allow standard browser autofill.
+05. Shipping Forms & Field Validation/5.3 Unicode & Mobile Attributes,TC_FRM_014: Visual Outline on Form Error State,Usability & Compliance,Visual Testing,Low,Invalid fields are visually demarcated with distinct border or alert text.,"1. Trigger validation failure
+2. Inspect computed CSS border colors",Clear visual indication of invalid field.
+05. Shipping Forms & Field Validation/5.3 Unicode & Mobile Attributes,TC_FRM_015: Form Data Reset upon Order Finalization,Functional & UI,Regression Testing,Medium,"After completing checkout, re-navigating to checkout presents a clean form.","1. Complete purchase
+2. Start new order
+3. Check form inputs",Form fields are clean for next order.
+06. Checkout & Order Completion/6.1 End-to-End Purchase Flow,TC_ORD_001: End-to-End User Purchase Journey (Golden Path),Functional & UI,End-to-End (E2E) Testing,Critical,Login -> Select Apple -> Add 2 Items -> Fill Shipping -> Order Confirmation.,"1. Authenticate as demouser
+2. Add products
+3. Checkout
+4. Submit shipping form",Order confirmation banner 'Your Order has been successfully placed' is displayed.
+06. Checkout & Order Completion/6.1 End-to-End Purchase Flow,TC_ORD_002: Guest Checkout Redirect to /signin,Functional & UI,Functional Testing,Critical,Unauthenticated user attempting to checkout is redirected to login prompt.,"1. Add product to cart as guest
+2. Click Checkout button in drawer",User is redirected to /signin with authentication prompt.
+06. Checkout & Order Completion/6.1 End-to-End Purchase Flow,TC_ORD_003: Post-Authentication Checkout Flow Resumption,Functional & UI,Integration Testing,High,Logging in after guest checkout redirect resumes user directly to shipping form.,"1. Trigger guest checkout
+2. Complete login on /signin",User lands directly on /checkout with items preserved.
+06. Checkout & Order Completion/6.2 Order Confirmation & State,TC_ORD_004: Order Confirmation Banner Display,Functional & UI,User Acceptance Testing (UAT),Critical,Successful checkout renders confirmation banner.,"1. Complete checkout form
+2. Click Submit
+3. Verify confirmation banner",'Your Order has been successfully placed' is visible.
+06. Checkout & Order Completion/6.2 Order Confirmation & State,TC_ORD_005: Download Order Receipt PDF Functionality,Functional & UI,Functional Testing,High,Verify presence and accessibility of 'Download order receipt' button.,"1. On confirmation page, locate 'Download order receipt'
+2. Inspect button state",Button is clickable with valid receipt download action.
+06. Checkout & Order Completion/6.2 Order Confirmation & State,TC_ORD_006: 'Continue Shopping' Button Redirects to Catalog,Functional & UI,Smoke Testing,Medium,Clicking 'Continue Shopping' navigates user back to home catalog.,1. Click 'Continue Shopping' on confirmation page,Browser navigates back to / with catalog loaded.
+06. Checkout & Order Completion/6.2 Order Confirmation & State,TC_ORD_007: Cart Emptied Automatically after Completed Order,Functional & UI,System Testing,Critical,"After completing checkout, cart quantity resets to 0.","1. Finish order
+2. Inspect floating bag quantity counter",Bag quantity is 0; cart drawer displays empty state.
+06. Checkout & Order Completion/6.2 Order Confirmation & State,TC_ORD_008: Prevent Duplicate Order on Double Click,Performance & Reliability,Concurrency Testing,High,Double clicking submit button does not generate duplicate orders.,1. Rapidly double click checkout submit button,Single order is created; button enters disabled state.
+06. Checkout & Order Completion/6.2 Order Confirmation & State,TC_ORD_009: Order Summary Item Count and Subtotal Match Cart,Functional & UI,Unit Testing,High,Item count and subtotal on checkout match drawer values precisely.,"1. Note drawer items and subtotal
+2. Compare to checkout page summary",Values are 100% identical.
+06. Checkout & Order Completion/6.2 Order Confirmation & State,TC_ORD_010: Direct Checkout URL Access Bypass Guard,Security & Vulnerability,Security Testing,Critical,Directly navigating to /checkout without items or auth redirects to /signin.,"1. Open clean browser session
+2. Navigate directly to /checkout",Redirected to /signin; checkout is guarded.
+07. Security & Vulnerability Assessment/7.1 SQL Injection Payloads,TC_SEC_001: SQLi Tautology Attack Rejection: ' OR '1'='1,Security & Vulnerability,SQL Injection (SQLi) Testing,Critical,Inject tautological SQL payload (' OR '1'='1) into username field.,"1. Enter ' OR '1'='1 in username
+2. Submit login",Authentication rejected; no unauthorized access.
+07. Security & Vulnerability Assessment/7.1 SQL Injection Payloads,TC_SEC_002: SQLi Comment Bypass Attack: admin' --,Security & Vulnerability,SQL Injection (SQLi) Testing,Critical,Inject comment-based SQL payload (admin' --) into username field.,"1. Enter admin' -- in username
+2. Submit login",Authentication rejected; no unauthorized bypass.
+07. Security & Vulnerability Assessment/7.1 SQL Injection Payloads,TC_SEC_003: SQLi Union-Based Extraction Attempt,Security & Vulnerability,SQL Injection (SQLi) Testing,Critical,Inject UNION SELECT payload into username field.,"1. Enter ' UNION SELECT 1, 'admin', 'hash' -- in username
+2. Submit",Authentication fails safely; no database dump.
+07. Security & Vulnerability Assessment/7.1 SQL Injection Payloads,TC_SEC_004: SQLi Blind Boolean Injection: ' AND 1=1 --,Security & Vulnerability,SQL Injection (SQLi) Testing,Critical,Test blind boolean SQL injection patterns in authentication inputs.,"1. Enter demouser' AND 1=1 -- in username
+2. Submit",Handled securely as non-existent user.
+07. Security & Vulnerability Assessment/7.2 XSS Sanitization & Escaping,TC_SEC_005: Stored XSS Injection in First Name: <script>alert(1)</script>,Security & Vulnerability,Cross-Site Scripting (XSS) Testing,Critical,Inject JavaScript script tags into shipping First Name input.,"1. Enter <script>alert('xss')</script> in First Name
+2. Submit checkout
+3. Verify DOM",Payload is HTML entity escaped; no dialog executes.
+07. Security & Vulnerability Assessment/7.2 XSS Sanitization & Escaping,TC_SEC_006: Event Handler XSS Injection: <img src=x onerror=alert(1)>,Security & Vulnerability,Cross-Site Scripting (XSS) Testing,Critical,Inject image onerror payload into Address field.,"1. Enter <img src=x onerror=alert(1)> in Address
+2. Inspect rendered DOM",Input is treated as raw text; onerror handler does not trigger.
+07. Security & Vulnerability Assessment/7.2 XSS Sanitization & Escaping,TC_SEC_007: Reflected XSS via URL Parameter Query Strings,Security & Vulnerability,Cross-Site Scripting (XSS) Testing,High,Inject script tag into URL query parameter (?search=<script>).,"1. Load URL with ?q=<script>alert('xss')</script>
+2. Check document alerts",Page renders safely without executing parameter script.
+07. Security & Vulnerability Assessment/7.3 Route Authorization & Misconfiguration,TC_SEC_008: Direct Checkout Route Authorization Bypass Prevention,Security & Vulnerability,Authentication & Authorization,Critical,Attempt direct access to /checkout without valid session token.,"1. Clear session
+2. driver.get('/checkout')",Application redirects user to /signin.
+07. Security & Vulnerability Assessment/7.3 Route Authorization & Misconfiguration,TC_SEC_009: Session Invalidation upon User Logout,Security & Vulnerability,Cross-Site Request Forgery (CSRF) Testing,Critical,Verify session token is revoked upon clicking logout.,"1. Login
+2. Logout
+3. Attempt to use old session cookie",Request rejected as unauthorized (401/403).
+07. Security & Vulnerability Assessment/7.3 Route Authorization & Misconfiguration,TC_SEC_010: Security Misconfiguration: 404 Route Stack Trace Disclosure,Security & Vulnerability,Security Misconfiguration Testing,High,Navigate to non-existent endpoint and ensure no raw server stack dumps.,"1. Navigate to /non-existent-endpoint-404
+2. Inspect body text",No unhandled 500 server dumps or Python/Node tracebacks.
+07. Security & Vulnerability Assessment/7.3 Route Authorization & Misconfiguration,TC_SEC_011: Client-Side DOM Price Tampering Inspection,Security & Vulnerability,Penetration Testing (Pen Testing),Critical,Verify client-side DOM price manipulation does not affect order subtotal.,"1. Modify price in DOM to $0.00
+2. Proceed to checkout",Server records original product price; tampering rejected.
+07. Security & Vulnerability Assessment/7.3 Route Authorization & Misconfiguration,TC_SEC_012: HTTPS Protocol & Secure Transport Enforcement,Security & Vulnerability,Cryptographic / Encryption Testing,High,Verify application is served strictly over HTTPS encryption.,1. Inspect driver.current_url protocol,Protocol is strictly https:.
+07. Security & Vulnerability Assessment/7.3 Route Authorization & Misconfiguration,TC_SEC_013: Autocomplete Security on Sensitive Form Inputs,Security & Vulnerability,Static Application Security Testing (SAST),Medium,Verify sensitive fields prevent insecure caching.,1. Inspect password input element attributes,Password input implements proper masking.
+07. Security & Vulnerability Assessment/7.3 Route Authorization & Misconfiguration,TC_SEC_014: Sensitive Data Masking in Console Logs,Security & Vulnerability,Dynamic Application Security Testing (DAST),High,Verify browser console logs do not dump unmasked plaintext passwords.,1. Read driver.get_log('browser') during login,No plaintext password strings logged to console.
+07. Security & Vulnerability Assessment/7.3 Route Authorization & Misconfiguration,TC_SEC_015: Cross-Origin Resource Sharing (CORS) Protection,Security & Vulnerability,Security Testing,Medium,Verify API responses do not expose wildcard Access-Control-Allow-Origin: * for sensitive routes.,1. Inspect API response headers,CORS headers are configured securely.
+08. Performance & Reliability/8.1 Concurrency & Stress,TC_PERF_001: 50 Concurrent User Login Load Simulation,Performance & Reliability,Load Testing,High,Simulate 50 concurrent login requests hitting authentication endpoint.,"1. Dispatch 50 concurrent worker requests to login API
+2. Measure status codes",High success rate without server 500 crashes.
+08. Performance & Reliability/8.1 Concurrency & Stress,TC_PERF_002: Catalog Vendor Filter Stress under Concurrency,Performance & Reliability,Stress Testing,High,Simulate concurrent requests hitting catalog endpoint under load.,1. Dispatch parallel requests to catalog with filter params,Catalog returns 200 OK across requests.
+08. Performance & Reliability/8.1 Concurrency & Stress,TC_PERF_003: Slow 3G Network Latency Throttling (CDP),Performance & Reliability,Endurance / Soak Testing,Medium,Simulate high latency (Slow 3G) and verify login completes gracefully.,"1. Throttle network to 200ms latency
+2. Perform login flow",Login completes without premature timeout.
+08. Performance & Reliability/8.2 Spike & Resilience,TC_PERF_004: Rapid Add-to-Cart Click Spike (<0.5s),Performance & Reliability,Spike Testing,Medium,Rapidly click Add to Cart 15+ times in < 0.5s; verify UI stability.,"1. Perform 15 clicks rapidly
+2. Open cart",UI does not freeze; cart retains added products.
+08. Performance & Reliability/8.2 Spike & Resilience,TC_PERF_005: Page Load Time Benchmark (< 3.0s),Performance & Reliability,Scalability Testing,High,Measure page load time via Navigation Timing API.,"1. Load page
+2. Read performance.timing.loadEventEnd - navigationStart",Total page load duration is under 3000ms.
+08. Performance & Reliability/8.2 Spike & Resilience,TC_PERF_006: DOM Node Count Scalability Benchmark (< 1500 Nodes),Performance & Reliability,Volume Testing,Medium,Verify total DOM elements remain lightweight for mobile performance.,1. Read document.getElementsByTagName('*').length,DOM node count is under 1500 elements.
+08. Performance & Reliability/8.2 Spike & Resilience,TC_PERF_007: Memory Leak Detection across Route Transitions,Performance & Reliability,Endurance / Soak Testing,Medium,Navigate back and forth between catalog and signin 10 times; monitor memory.,"1. Loop 10 route navigations
+2. Check JS heap size via performance.memory",No runaway memory leak or browser crash.
+08. Performance & Reliability/8.2 Spike & Resilience,TC_PERF_008: JavaScript Error Free Console Inspection,Performance & Reliability,Stress Testing,High,Verify browser console contains zero unhandled exception logs during user journey.,"1. Execute full journey
+2. Read driver.get_log('browser') for SEVERE errors",No SEVERE application crash logs.
+08. Performance & Reliability/8.2 Spike & Resilience,TC_PERF_009: API Network Failure Graceful UI Fallback,Specialized & Infrastructure,Chaos Engineering / Resilience Testing,Medium,Simulate offline state and verify user interface does not display raw white screen.,"1. Disconnect network
+2. Attempt navigation
+3. Observe UI state",Application displays graceful offline state or standard browser error.
+08. Performance & Reliability/8.2 Spike & Resilience,TC_PERF_010: Static Asset Cache Header Verification,Performance & Reliability,Scalability Testing,Low,"Verify static assets (images, CSS) include caching headers.",1. Inspect network response headers for image assets,Cache-Control or ETag headers are present.
+09. Usability & Compliance/9.1 WCAG 2.1 Accessibility,TC_USA_001: WCAG 2.1 Full Keyboard-Only Form Navigation,Usability & Compliance,Accessibility Testing (WCAG / ADA),High,Navigate from login inputs to submit using exclusively Tab and Enter.,"1. Send TAB keystrokes to cycle focus
+2. Verify activeElement",Focus visibly highlights interactive input controls.
+09. Usability & Compliance/9.1 WCAG 2.1 Accessibility,TC_USA_002: Screen Reader Accessible Name on Cart Close Button,Usability & Compliance,Accessibility Testing (WCAG / ADA),High,Verify screen readers can announce the 'X' button inside cart drawer.,"1. Inspect close button attributes for aria-label, role, or text",Close button has accessible identifier attribute.
+09. Usability & Compliance/9.1 WCAG 2.1 Accessibility,TC_USA_003: Color Contrast Ratio Compliance on Error Banner,Usability & Compliance,Compliance / Regulatory Testing,Medium,Verify color contrast CSS property on red invalid login error text meets WCAG AA.,1. Read computed CSS color property on error element,Defined high-contrast color property is present.
+09. Usability & Compliance/9.1 WCAG 2.1 Accessibility,TC_USA_004: Visible Focus Outline on All Interactive Controls,Usability & Compliance,Accessibility Testing (WCAG / ADA),Medium,Verify interactive buttons and links have visible focus outline.,"1. TAB onto button
+2. Read computed outline-style and outline-color",Outline is not 'none'.
+09. Usability & Compliance/9.1 WCAG 2.1 Accessibility,TC_USA_005: 200% Browser Zoom Content Reflow without Truncation,Usability & Compliance,Usability Testing,Medium,Zoom browser to 200% and ensure content remains legible without horizontal breakage.,"1. Execute driver.execute_script('document.body.style.zoom=""200%""')
+2. Check scrollWidth",Layout reflows cleanly without breaking text boundaries.
+09. Usability & Compliance/9.2 i18n & Form Ergonomics,TC_USA_006: Form Input Labels Programmatically Associated via 'for'/'id',Usability & Compliance,Compliance / Regulatory Testing,Low,Ensure form labels point to input fields for screen reader clarity.,1. Inspect label and input pairings,Inputs are wrapped or explicitly bound by labels.
+09. Usability & Compliance/9.2 i18n & Form Ergonomics,TC_USA_007: HTML Page Language Tag Declaration (<html lang='en'>),Usability & Compliance,Internationalization (i18n) Testing,Low,Verify <html> element declares lang attribute for screen readers.,1. Read document.documentElement.lang,Lang attribute is defined (e.g. 'en').
+09. Usability & Compliance/9.2 i18n & Form Ergonomics,TC_USA_008: Currency Symbol Formatting ($ USD),Usability & Compliance,Localization (l10n) Testing,Low,Verify currency symbol is consistently formatted across cards and cart.,1. Compare currency symbol on catalog card vs drawer subtotal,Identical currency notation used consistently.
+09. Usability & Compliance/9.2 i18n & Form Ergonomics,TC_USA_009: Dynamic Viewport Font Scalability,Usability & Compliance,Usability Testing,Low,Ensure font sizes are readable across desktop and mobile screens.,1. Inspect computed font-size on product titles across viewports,Font size is >= 14px on all screens.
+09. Usability & Compliance/9.2 i18n & Form Ergonomics,TC_USA_010: Descriptive Document Title across App Routes,Usability & Compliance,Usability Testing,Low,Verify document title accurately describes the current application view.,1. Read document.title on home and checkout,Title is non-empty and reflects StackDemo application.
+10. Specialized & Infrastructure/10.1 Smartphones Small to Large Flagships,XD_TC001: 1-Column Responsive Grid on Small Screen Phones (320px - 375px),Specialized & Infrastructure,Mobile App Testing (iOS & Android),High,Target: iPhone SE 2022 / Galaxy S10. Verify 1-column layout without overflow.,"1. Set window size to 375x667
+2. Check product cards and scrollWidth",Cards render cleanly; scrollWidth <= innerWidth + 10px.
+10. Specialized & Infrastructure/10.1 Smartphones Small to Large Flagships,XD_TC002: Cart Drawer Animation on Mid-to-Large Smartphones (390px - 412px),Specialized & Infrastructure,Mobile App Testing (iOS & Android),High,Target: iPhone 15 / Galaxy S23. Verify drawer covers viewport responsively.,"1. Set window size to 393x852
+2. Open cart drawer
+3. Check close button",Drawer is displayed with accessible touch close button.
+10. Specialized & Infrastructure/10.1 Smartphones Small to Large Flagships,XD_TC003: Product Image Rendering Bounds on Flagship Pro Models (430px),Specialized & Infrastructure,Mobile App Testing (iOS & Android),Medium,Target: iPhone 15 Pro Max / Galaxy S24 Ultra. Verify image bounds on large pro screens.,"1. Set window size to 430x932
+2. Inspect product image rects",Images render with proper width > 50px.
+10. Specialized & Infrastructure/10.2 Foldables & Tablets,XD_TC004: Foldable Multi-Column Reflow from Folded to Unfolded,Specialized & Infrastructure,Compatibility Testing,High,Target: Samsung Galaxy Z Fold 5 / Google Pixel Fold (Folded 412px to Unfolded 768px).,"1. Set size 412x900
+2. Resize to 768x904
+3. Verify catalog reflow",Catalog reflows from single column to multi-column grid seamlessly.
+10. Specialized & Infrastructure/10.2 Foldables & Tablets,XD_TC005: Tablet Portrait Layout Reflow (768px - 820px),Specialized & Infrastructure,Compatibility Testing,Medium,Target: iPad Air 5 / Samsung Galaxy Tab S9. Verify tablet portrait grid.,"1. Set size 820x1180
+2. Inspect catalog grid",Tablet portrait renders multi-column grid.
+10. Specialized & Infrastructure/10.2 Foldables & Tablets,XD_TC006: Tablet Landscape Side-by-Side Checkout Layout (1024px - 1366px),Specialized & Infrastructure,Compatibility Testing,High,Target: iPad Pro 12.9 / Galaxy Tab S9 Landscape. Verify checkout layout.,"1. Set size 1366x1024
+2. Complete purchase journey
+3. Check shipping form",Shipping form renders comfortably in landscape layout.
+10. Specialized & Infrastructure/10.3 Engine Parity & Data Integrity,"XD_TC007: CSS Grid and Flexbox Support across Browser Engines (Blink, Gecko, WebKit)",Specialized & Infrastructure,Cross Browser Testing,Critical,"Verify CSS Grid and Flexbox support across Chromium, Gecko, and WebKit.","1. Execute CSS.supports('display', 'grid') and ('display', 'flex')",Both return true across all engines.
+10. Specialized & Infrastructure/10.3 Engine Parity & Data Integrity,"XD_TC008: Modern JavaScript API Readiness (Fetch, LocalStorage, Promise)",Specialized & Infrastructure,API / Web Services Testing,High,"Verify window.fetch, localStorage, and Promise APIs are supported natively.","1. Query typeof window.fetch, window.localStorage, window.Promise via JS","All APIs available across latest, beta, and dev browser channels."
+10. Specialized & Infrastructure/10.3 Engine Parity & Data Integrity,XD_TC009: Dynamic Orientation Change (Portrait -> Landscape),Specialized & Infrastructure,Compatibility Testing,Medium,Rotate viewport from 390x844 to 844x390 and ensure catalog items remain intact.,"1. Set 390x844
+2. Resize to 844x390
+3. Verify product card visibility",Cards remain fully visible and responsive.
+10. Specialized & Infrastructure/10.3 Engine Parity & Data Integrity,XD_TC010: Ultra-Wide Desktop Viewport Containment (2560px),Specialized & Infrastructure,Visual Testing,Low,Ensure application content is gracefully centered and bounded on 2560px monitors.,"1. Set 2560x1440
+2. Measure container width",Main content is centered with graceful max-width containment.
+10. Specialized & Infrastructure/10.3 Engine Parity & Data Integrity,XD_TC011: Automated PostgreSQL Database Sync & Data Integrity Failover,Specialized & Infrastructure,Database / Data Integrity Testing,Critical,Verify all test executions are logged into PostgreSQL localhost:5432 with SQLite fallback.,"1. Run database initialization and insert test records
+2. Verify row count",All test executions recorded in database with valid duration and status.
