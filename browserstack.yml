@@ -1,0 +1,234 @@
+# ==============================================================================
+# BrowserStack SDK Configuration
+# Project: webghzyt | Target: https://bugbash.online/
+# ==============================================================================
+
+# Credentials (read securely from environment variables or .env file)
+userName: ${BROWSERSTACK_USERNAME}
+accessKey: ${BROWSERSTACK_ACCESS_KEY}
+
+# Project details
+projectName: webghzyt
+buildName: BrowserStack Testathon - Multi-Device Matrix Build
+buildIdentifier: '#${BUILD_NUMBER}'
+
+# Test Observability & Reporting
+testObservability: true
+networkLogs: true
+consoleLogs: info
+
+# Test Management Integration
+# https://test-management.browserstack.com/projects/4102200/folder
+testManagement:
+  project: 4102200
+  syncResults: true
+
+# ==============================================================================
+# COMPREHENSIVE CROSS-PLATFORM TESTING MATRIX
+# Covers Desktop (Windows, macOS), Smartphones (Small, Standard, Large Pro, Foldables), & Tablets
+# ==============================================================================
+platforms:
+  # ----------------------------------------------------------------------------
+  # 1. Desktop Environments (Windows 11 & 10)
+  # Browsers: Chrome, Microsoft Edge, Mozilla Firefox, Opera, Yandex
+  # Channels: Latest, Beta, Dev
+  # ----------------------------------------------------------------------------
+  - os: Windows
+    osVersion: 11
+    browserName: Chrome
+    browserVersion: latest # 152 (latest)
+
+  - os: Windows
+    osVersion: 11
+    browserName: Chrome
+    browserVersion: beta # 153 (beta)
+
+  - os: Windows
+    osVersion: 11
+    browserName: Chrome
+    browserVersion: dev # 154 (dev)
+
+  - os: Windows
+    osVersion: 11
+    browserName: Edge
+    browserVersion: latest # 152 (latest)
+
+  - os: Windows
+    osVersion: 11
+    browserName: Edge
+    browserVersion: beta # 153 (beta)
+
+  - os: Windows
+    osVersion: 11
+    browserName: Edge
+    browserVersion: dev # 154 (dev)
+
+  - os: Windows
+    osVersion: 11
+    browserName: Firefox
+    browserVersion: latest # 154 (latest)
+
+  - os: Windows
+    osVersion: 11
+    browserName: Firefox
+    browserVersion: beta # 156 (beta)
+
+  - os: Windows
+    osVersion: 10
+    browserName: Chrome
+    browserVersion: latest
+
+  - os: Windows
+    osVersion: 10
+    browserName: Edge
+    browserVersion: latest
+
+  - os: Windows
+    osVersion: 10
+    browserName: Firefox
+    browserVersion: latest
+
+  # ----------------------------------------------------------------------------
+  # 2. Desktop Environments (macOS Sequoia, Sonoma, Ventura, Monterey)
+  # Browsers: Safari, Chrome, Firefox, Edge
+  # ----------------------------------------------------------------------------
+  - os: OS X
+    osVersion: Sequoia
+    browserName: Safari
+    browserVersion: latest # 18.0
+
+  - os: OS X
+    osVersion: Sonoma
+    browserName: Safari
+    browserVersion: 17.0
+
+  - os: OS X
+    osVersion: Sonoma
+    browserName: Chrome
+    browserVersion: latest
+
+  - os: OS X
+    osVersion: Sonoma
+    browserName: Firefox
+    browserVersion: latest
+
+  - os: OS X
+    osVersion: Ventura
+    browserName: Safari
+    browserVersion: 16.5
+
+  - os: OS X
+    osVersion: Monterey
+    browserName: Chrome
+    browserVersion: latest
+
+  # ----------------------------------------------------------------------------
+  # 3. Smartphones - iOS (Small Phones, Standard, Large Pro Flagships)
+  # ----------------------------------------------------------------------------
+  # Small Screen (4.7 in)
+  - deviceName: iPhone SE 2022
+    osVersion: '17'
+    browserName: safari
+
+  # Compact Screen (5.4 in)
+  - deviceName: iPhone 12 Mini
+    osVersion: '16'
+    browserName: safari
+
+  # Standard Flagship (6.1 in)
+  - deviceName: iPhone 15
+    osVersion: '17'
+    browserName: safari
+
+  # Large Pro Max Flagship (6.7 in)
+  - deviceName: iPhone 15 Pro Max
+    osVersion: '17'
+    browserName: safari
+
+  # Next-Gen Pro Flagship
+  - deviceName: iPhone 16 Pro
+    osVersion: '18'
+    browserName: safari
+
+  # ----------------------------------------------------------------------------
+  # 4. Smartphones - Android (Legacy Small, Standard, Large Pro, Foldables)
+  # ----------------------------------------------------------------------------
+  # Legacy Small Screen
+  - deviceName: Samsung Galaxy S10
+    osVersion: '10.0'
+    browserName: chrome
+
+  # Compact Flagship
+  - deviceName: Google Pixel 5
+    osVersion: '11.0'
+    browserName: chrome
+
+  # Standard Modern Flagship
+  - deviceName: Samsung Galaxy S23
+    osVersion: '13.0'
+    browserName: chrome
+
+  # Large Pro Flagships
+  - deviceName: Samsung Galaxy S24 Ultra
+    osVersion: '14.0'
+    browserName: chrome
+
+  - deviceName: Google Pixel 8 Pro
+    osVersion: '14.0'
+    browserName: chrome
+
+  - deviceName: OnePlus 11
+    osVersion: '13.0'
+    browserName: chrome
+
+  - deviceName: Xiaomi Redmi Note 11
+    osVersion: '12.0'
+    browserName: chrome
+
+  # Foldable Smartphones
+  - deviceName: Samsung Galaxy Z Fold 5
+    osVersion: '13.0'
+    browserName: chrome
+
+  - deviceName: Samsung Galaxy Z Flip 5
+    osVersion: '13.0'
+    browserName: chrome
+
+  - deviceName: Google Pixel Fold
+    osVersion: '14.0'
+    browserName: chrome
+
+  # ----------------------------------------------------------------------------
+  # 5. Tablets (iPadOS & Android Tablets)
+  # ----------------------------------------------------------------------------
+  # Large Tablet (12.9 in)
+  - deviceName: iPad Pro 12.9 2022
+    osVersion: '17'
+    browserName: safari
+
+  # Mid-size Tablet (10.9 in)
+  - deviceName: iPad Air 5
+    osVersion: '16'
+    browserName: safari
+
+  # Compact Tablet (8.3 in)
+  - deviceName: iPad Mini 2021
+    osVersion: '17'
+    browserName: safari
+
+  # Android Tablets
+  - deviceName: Samsung Galaxy Tab S9
+    osVersion: '13.0'
+    browserName: chrome
+
+  - deviceName: Samsung Galaxy Tab S8
+    osVersion: '12.0'
+    browserName: chrome
+
+# Local Testing Tunnel (Optional)
+browserstackLocal: false
+localIdentifier: local_testathon_tunnel
+
+# Execution settings
+parallelsPerPlatform: 1
+source: python:pytest:sdk:v1

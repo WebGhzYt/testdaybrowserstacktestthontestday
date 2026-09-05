@@ -1,0 +1,26 @@
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Test reports & exports
+reports/
+*.log
+log/
+~*
+*.tmp
+
+# Environment & credentials (keep template committed, ignore real secrets if desired)
+.env
+
+# IDEs
+.idea/
+.vscode/
+*.swp
