@@ -17,11 +17,6 @@ testObservability: true
 networkLogs: true
 consoleLogs: info
 
-# Test Management Integration
-# https://test-management.browserstack.com/projects/4102200/folder
-testManagement:
-  project: 4102200
-  syncResults: true
 
 # ==============================================================================
 # COMPREHENSIVE CROSS-PLATFORM TESTING MATRIX
@@ -225,8 +220,8 @@ platforms:
     osVersion: '12.0'
     browserName: chrome
 
-# Local Testing Tunnel (Optional)
-browserstackLocal: false
+# Local Testing Tunnel (Active)
+browserstackLocal: true
 localIdentifier: local_testathon_tunnel
 
 # Execution settings
